@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<h1>Welcome, {{ user.username }}</h1>
+{% else %}
+<h1>Welcome, Guest</h1>
+{% endif %}
+<br><br>
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h1>รายการประกาศขาย</h1>
+                <form class="form-inline" method="GET" action="{% url 'index' %}">
+                    <div class="form-group">
+                        <input type="text" class="form-control ml-3" id="sellSearch" name="sellSearch"
+                            placeholder="Search" value="{{sellSearch}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary ml-3">ค้นหา</button>
+                </form>
+                <br>
+                <ul>
+                    {% for slist in sell %}
+                    {% if slist.type == 'S' %}
+                    <li><a href="{% url 'view_post' post_id=slist.id %}">{{ slist.text_book }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h1>รายการประกาศซื้อ</h1>
+                <form class="form-inline" method="GET" action="{% url 'index' %}">
+                    <div class="form-group">
+                        <input type="text" class="form-control ml-3" id="buySearch" name="buySearch"
+                            placeholder="Search" value="{{buySearch}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary ml-3">ค้นหา</button>
+                </form>
+                <br>
+                <ul>
+                    {% for blist in buy%}
+                    {% if blist.type == 'B' %}
+                    <li><a href="{% url 'view_post' post_id=blist.id %}">{{ blist.text_book }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

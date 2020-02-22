@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% if post.type == 'S' %}
+<h1>ประกาศขาย {{ post.text_book }}</h1>
+{% else %}
+<h1>ประกาศซื้อ {{ post.text_book }}</h1>
+{% endif %}
+<div class="row">
+    <div class="col-3">
+        <img width="300px" height="300px" src="{{ post.picture.url }}">
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                {% if post.type == 'S' %}
+                <h5>ชื่อ : {{ post.text_book }}</h5><br>
+                <h5>ราคา : {{ post.price }}</h5><br>
+                <h5>ขายโดย : {{ post.create_by }}</h5><br>
+                <h5>ขายเมื่อ : {{ post.create_date }}</h5><br>
+                {% else %}
+                <h5>ชื่อ : {{ post.text_book }}</h5><br>
+                <h5>ราคารับซื้อ : {{ post.price }}</h5><br>
+                <h5>รับซื้อโดย : {{ post.create_by }}</h5><br>
+                <h5>ตั้งซื้อเมื่อ : {{ post.create_date }}</h5><br>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% if user.is_authenticated %}
+<div class="row">
+    <div class="col-3">
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-inline" method="POST" action="{% url 'view_post' post_id=post.id %}">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <!-- <input type="text" class="form-control" style="width:100%" id="comment" name="comment"
+                            placeholder="Your Comment" value="{{comment}}"> -->
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-left:20px">เขียนคอมเมนต์</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endif %}
+<div class="row">
+    <div class="col-3">
+    </div>
+    <div class="col-9">
+        <h3>Comments</h3>
+    </div>
+</div>
+<br>
+{% if comment %}
+{% for cm in comment %}
+{% if cm.post_id_id == post.id %}
+<div class="row">
+    <div class="col-3">
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="card-body">
+                <p>{{ cm.message }}</p>
+                <br>
+                <p align="right">โดย : {{ cm.create_by }} เมื่อ : {{ cm.create_date }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h1>สร้างโพสต์ใหม่</h1>
+<form class="form" method="POST" action="{% url 'add_post' %}" enctype="multipart/form-data">
+    <div class="form-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <!-- <input type="text" class="form-control ml-3" id="textBook" name="textBook"
+            value="{{textBook}}"> -->
+    </div>
+    <button type="submit" class="btn btn-warning ml-3">สร้างโพสต์</button>
+</form>
+
+{% endblock %}
